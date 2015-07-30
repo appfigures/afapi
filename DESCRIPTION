@@ -1,0 +1,15 @@
+Package: afapi
+Type: Package
+Title: An interface to the appFigures web API
+Description: Allows users to request account data from the appFigures
+    web API. Both the private and public scopes are supported and
+    function options adhere closely to the routes specified in the
+    official API documentation.
+URL: http://docs.appfigures.com/
+Version: 0.0.0.9000
+Date: 2015-04-30
+Authors@R: person("Lucas", "Dowiak", email = "lucas@appfigures.com",
+    role = c("aut", "cre"))
+License: GPL (>= 2)
+Depends: jsonlite (>= 0.9.16),
+    RCurl (>= 1.95-4.5)
