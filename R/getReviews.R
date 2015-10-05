@@ -19,7 +19,7 @@
 #' 
 #' @param author Character. Name of an author to filter reviews.
 #' 
-#' @param country. One or more country iso codes. Defaults to all
+#' @param country One or more country iso codes. Defaults to all
 #' countries. See Details.
 #' 
 #' @param versions Character. One of more version numbers of an app to
@@ -55,6 +55,11 @@
 #' Regarding the \code{lang} and \code{country} arguments, a
 #' complete list of supported languages can be found using
 #' \code{\link{getStoreData}}.
+#' 
+#' Also, since the results are paginated, the returned data frame
+#' has an attached attribute called 'header', which provides data
+#' on the total number of reviews available, the current page number,
+#' and the total number of pages (given 'count' = xx).d
 #' 
 #' @return A data frame containing the requested review report.
 #' 

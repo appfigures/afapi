@@ -41,9 +41,11 @@ searchProducts <- function(term, filter = NULL, page = 1, count = 25,
                            curlHandle, verbose = FALSE,
                            orgJSON = FALSE) {
   
-  if (!is.null(filter)) stopifnot(filter %in% c("ios", "mac", "google",
-                                                "amazon"))
   stopifnot(!missing(term))
+  if (!is.null(filter)) {
+    stopifnot(filter %in% c("ios", "mac", "google", "amazon"))
+  }
+  
   parList <- c(filter = filter, page = page, count = count)
   uri <- paste(BASE_URI, "products", "search", term, sep = "/")
   if (missing(curlHandle)) {
@@ -57,9 +59,12 @@ searchProducts <- function(term, filter = NULL, page = 1, count = 25,
     curlHandle = curlHandle
   }  
   jsonText <- getForm(uri, curl = curlHandle, .params = parList)
-  if (orgJSON) return(jsonText)
-  if (!validate(jsonText))
+  if (orgJSON) {
+    return(jsonText)
+  }
+  if (!validate(jsonText)) {
     stop("appFigures API yielded invalid JSON!")
+  }
   parseSearch(jsonText)
 }
 
@@ -73,10 +78,13 @@ searchProducts <- function(term, filter = NULL, page = 1, count = 25,
 
 parseSearch <- function(jsonText) {
   datr <- fromJSON(jsonText)
-  if (length(datr[[1]]) <= 1)
-    return(as.data.frame(t(unlist(datr)), stringsAsFactors = F))
+  if (length(datr[[1]]) <= 1) {
+    out <- as.data.frame(t(unlist(datr)), stringsAsFactors = F)
+    names(out)[1:2] <- c("product_id", "p_name")
+    return(out)
+  }
   device <- vapply(datr$devices,
-                   function(x) ifelse(identical(x, character(0)), "NA", x),
+                   function(x) ifelse(identical(x, character(0)), NA_character_, x),
                    character(1))
   price <- datr$price
   datr$devices <- device

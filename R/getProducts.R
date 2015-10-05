@@ -37,7 +37,7 @@ getProducts <- function(id, store = c("all", "apple", "google",
                         "amazon", "windows"), curlHandle,
                         verbose = FALSE, orgJSON = FALSE) {
   
-  stopifnot(length(id) >= 1)
+  stopifnot(length(id) == 1)
   store <- match.arg(store)
   if (id == "mine") {
     uri <- paste(BASE_URI, "products", "mine", sep = "/")
