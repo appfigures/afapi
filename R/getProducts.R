@@ -33,24 +33,24 @@
 #' \url{http://docs.appfigures.com/products}.
 #' 
 
-getProducts <- function(id, store = c("all", "apple", "google",
+getProducts <- function(product_id, store = c("all", "apple", "google",
                         "amazon", "windows"), curlHandle,
                         verbose = FALSE, orgJSON = FALSE) {
   
-  stopifnot(length(id) == 1)
+  stopifnot(length(product_id) == 1)
   store <- match.arg(store)
-  if (id == "mine") {
+  if (product_id == "mine") {
     uri <- paste(BASE_URI, "products", "mine", sep = "/")
     parList <- if (store != "all") c(store = store)
   } else {
-    if (store == "all" && !missing(id)) {
-      message("Store is set to `all`. Assuming `id` is the
+    if (store == "all" && !missing(product_id)) {
+      message("Store is set to `all`. Assuming `product_id` is the
               appFigures-assinged id.")
-      uri <- paste(BASE_URI, "products", id, sep = "/")
+      uri <- paste(BASE_URI, "products", product_id, sep = "/")
       parList <- NULL
-    } else if(store != "all" && !missing(id)) {
-      message("Assuming `id` is store specific id.")
-      uri <- paste(BASE_URI, "products", store, id, sep = "/")
+    } else if(store != "all" && !missing(product_id)) {
+      message("Assuming `product_id` is store specific id.")
+      uri <- paste(BASE_URI, "products", store, product_id, sep = "/")
       parList <- NULL
     } else stop("appFigures or Store `id` must be specified for
                 this function.")
