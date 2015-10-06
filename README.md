@@ -1,6 +1,6 @@
 # afapi
 
-afapi is an R interface for the appFigures API. It uses RCurl for html requests and parses the (JSON) responses with jsonlite. Aside from the documentation contained in this package, the [original documentation](http://docs.appfigures.com/) is a great reference for the available routes. A conscious effort has been made to keep the afapi naming patterns as similar as possible to those described in the official documentation.
+afapi is an R interface for the appFigures API. It uses RCurl for html requests and parses the (JSON) responses with jsonlite. Aside from the documentation contained in this package, the [original documentation](http://docs.appfigures.com/) is a great reference for the available routes. A conscious effort has been made to keep the afapi naming patterns as similar as possible to the routes and options described in the official documentation.
 
 ## Installation
 
@@ -91,7 +91,7 @@ ch <- getCurlHandle(.opts = list(userpwd = paste(USERNAME, PASSWORD, sep = ":"),
 # Make request for the ranks in each top overall category.
 top_ranks <- lapply(top_cats$category_id,
                     function(x) getRankSnapshot(category = x, subcategory = "free",
-                                                curlHandle = ch)
+                                                curlHandle = ch))
 top_ranks
 ```
 
