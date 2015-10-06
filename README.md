@@ -1,9 +1,6 @@
-# appfigures-r
+# afapi
 
-afapi
-======
-
-afapi is an R interface for the appFigures API. It uses RCurl for html requests and parses the (JSON) responses with jsonlite. Aside from the documentation contained in this package, the (original documentation)[http://docs.appfigures.com/] is a great reference for the available routes. A conscious effort has been made to keep the afapi naming patterns as similar as possible to those described in the official documentation.
+afapi is an R interface for the appFigures API. It uses RCurl for html requests and parses the (JSON) responses with jsonlite. Aside from the documentation contained in this package, the [original documentation](http://docs.appfigures.com/) is a great reference for the available routes. A conscious effort has been made to keep the afapi naming patterns as similar as possible to those described in the official documentation.
 
 ## Installation
 
@@ -42,8 +39,6 @@ BASE_URI <- 'https://api.appfigures.com/v2'
 The following bloc of code requests product metadata in various ways.
 
 ```R
-library(afapi)
-
 # Check data usage before making a bunch of calls to the API
 usage = getUsage()
 usage["api_requests", c("today", "remaining")]
@@ -75,13 +70,14 @@ Rank data can be obtained one of two ways. Either you can search the ranks of a 
  getRanks(snapchat$product_id, granularity = "daily", country = "GB")
  ```
 
-Or you can search for a cross-section of the top apps for a particular category. Below is a more involved example. We will obtain a list of the top overall apps for Google Play, the Amazon App Store, and the Apple App Store.
+Or you can search for a cross-section of the top apps for a particular category/subcategory combination. Below is a more involved example. We will obtain a list of the top overall apps for Google Play, the Amazon App Store, and the Apple App Store.
 
 ```R
 # Bring in data on store categories
 cats <- getStoreData("categories")
 
-# Find active categories that have 'Top Overall' in their category name, excluding the Windows store
+# Find active categories that have 'Top Overall' in their category name,
+# excluding Windows apps
 top_cats <- subset(cats, grepl("Top Overall", cats$name) & active & store != "windows_phone")
 
 # Create a curl handle to use for all snapshot requests.
@@ -108,14 +104,23 @@ Retrieving reviews is simple enough.
 getReviews(aF$product_id)
 ```
 
-For an app that has a high volume of reviews, multiple calls to 'getReviews()' will be needed. To aid in pulling in all reviews, the data frame that is returned by a call to 'getReviews()' will have an attributed named 'header'. This attribute contains information on the total number of reviews, the total number of pages, and the current page. Use this information to loop through multiple calls of the function:
+For an app that has a high volume of reviews, multiple calls to 'getReviews()' will be needed. To aid in pulling in all reviews, the data frame that is returned by a call to 'getReviews()' will have an attribute named 'header'. This attribute contains information on the total number of reviews, the total number of pages, and the current page. Use this information to loop through multiple calls of the function:
 
 ```R
 # Using the Snapchat metadata stored earlier, search for all reviews in the past seven days:
-rev1 <- getReviews(snapchat$product_id, start_date = Sys.Date() - 7, count = 50, page = 1)
+rev1 <- getReviews(snapchat$product_id, start_date = Sys.Date() - 3, count = 50,
+		   page = 1)
 
-# Multiple calls to 'getReview()' should follow, where each call changes the 'page' argument (page = page + 1)
-attr(rev1, "header")
+# Multiple calls to 'getReview()' should follow, where each call changes the
+# 'page' argument (page = page + 1)
+npages <- attr(rev1, "header")["total_pages"]
+out <- vector("list", npages - 1)
+for (np in 2:npages) {
+  out[[np]] <- getReviews(snapchat$product_id, start_date = Sys.Date() - 3,
+                          count = 50, page = np)
+}
+do.call(rbind, c(list(rev1), out))
+
 ```
 
 ## Final Example
