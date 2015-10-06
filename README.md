@@ -108,8 +108,7 @@ For an app that has a high volume of reviews, multiple calls to 'getReviews()' w
 
 ```R
 # Using the Snapchat metadata stored earlier, search for all reviews in the past seven days:
-rev1 <- getReviews(snapchat$product_id, start_date = Sys.Date() - 3, count = 50,
-		   page = 1)
+rev1 <- getReviews(snapchat$product_id, start_date = Sys.Date() - 3, count = 50, page = 1)
 
 # Multiple calls to 'getReview()' should follow, where each call changes the
 # 'page' argument (page = page + 1)
@@ -125,7 +124,7 @@ do.call(rbind, c(list(rev1), out))
 
 ## Final Example
 
-If, for any reason, you dislike any of the JSON --> R mappings, most of the get* functions have an argument 'orgJSON', which will return the original JSON string from the appFigures API. Also, 'verbose = TRUE' will provide details about the web requests.
+If, for any reason, you dislike the JSON --> R mappings, most of the get* functions have an `orgJSON` switch, which, if set to `TRUE`, will return the original JSON string from the appFigures API. Another logical option `verbose` will provide details about the web requests if set to `TRUE`.
 
 ```R
 jsonlite::prettify(getUsage(orgJSON = TRUE, verbose = TRUE))
