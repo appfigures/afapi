@@ -132,14 +132,14 @@ parseFullStoreData <- function(jsonText) {
          store_countries = st_ctry,
          store_categories = st_cats)
   }
-  stores <- lapply(datr[1:4], format_stores)
+  stores <- lapply(datr[1:3], format_stores)
   # ad network formatting
   format_adnetworks <- function(lst) {
     data.frame(t(unlist(lst[1:6])),
                lst$countries,
                stringsAsFactors = F)
   }
-  adnetworks <- lapply(datr[5:length(datr)], format_adnetworks)
+  adnetworks <- lapply(datr[4:length(datr)], format_adnetworks)
   adnetworks <- do.call(rbind, adnetworks)
   adnetworks$code <- as.numeric(adnetworks$code)
   adnetworks$apple_store_no <- as.numeric(adnetworks$apple_store_no)
@@ -147,6 +147,6 @@ parseFullStoreData <- function(jsonText) {
   row.names(adnetworks) <- NULL
   
   list(apple = stores[[1]], google_play = stores[[2]],
-       amazon_appstore = stores[[3]], widnows_phone = stores[[4]],
+       amazon_appstore = stores[[3]],
        adnetworks = adnetworks)
 }

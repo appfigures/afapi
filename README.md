@@ -43,7 +43,7 @@ The following bloc of code requests product metadata in various ways.
 usage = getUsage()
 usage["api_requests", c("today", "remaining")]
 
-# Get a list of all your products
+# Get a list of all your products (needs private scope)
 getProducts("mine")
 
 # You can request product metadata through the appFigures assigned product id:
@@ -107,7 +107,7 @@ getReviews(aF$product_id)
 For an app that has a high volume of reviews, multiple calls to 'getReviews()' will be needed. To aid in pulling in all reviews, the data frame that is returned by a call to 'getReviews()' will have an attribute named 'header'. This attribute contains information on the total number of reviews, the total number of pages, and the current page. Use this information to loop through multiple calls of the function:
 
 ```R
-# Using the Snapchat metadata stored earlier, search for all reviews in the past seven days:
+# Using the Snapchat metadata stored earlier, search for all reviews in the past three days:
 rev1 <- getReviews(snapchat$product_id, start_date = Sys.Date() - 3, count = 50, page = 1)
 
 # Multiple calls to 'getReview()' should follow, where each call changes the
@@ -115,7 +115,7 @@ rev1 <- getReviews(snapchat$product_id, start_date = Sys.Date() - 3, count = 50,
 npages <- attr(rev1, "header")["total_pages"]
 out <- vector("list", npages - 1)
 for (np in 2:npages) {
-  out[[np]] <- getReviews(snapchat$product_id, start_date = Sys.Date() - 3,
+  out[[np - 1]] <- getReviews(snapchat$product_id, start_date = Sys.Date() - 3,
                           count = 50, page = np)
 }
 do.call(rbind, c(list(rev1), out))
@@ -124,7 +124,7 @@ do.call(rbind, c(list(rev1), out))
 
 ## Final Example
 
-If, for any reason, you dislike the JSON --> R mappings, most of the get* functions have an `orgJSON` switch, which, if set to `TRUE`, will return the original JSON string from the appFigures API. Another logical option `verbose` will provide details about the web requests if set to `TRUE`.
+If, for any reason you dislike the JSON --> R mappings contained in the afapi package, most of the get* functions have an `orgJSON` switch, which, if set to `TRUE`, will return the original (unparsed) JSON response. Another logical option `verbose` will provide details about the web requests if set to `TRUE`.
 
 ```R
 jsonlite::prettify(getUsage(orgJSON = TRUE, verbose = TRUE))
