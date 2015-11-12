@@ -55,9 +55,8 @@
 #' \url{http://docs.appfigures.com/api/reference/v2/ranks}.
 #' 
 
-getRanks <- function(product_ids, country = "US", category,
-                     end_date, start_date, filter = 400,
-                     granularity = c("daily", "hourly"),
+getRanks <- function(product_ids, country = "US", category, end_date, start_date,
+                     filter = 400, granularity = c("daily", "hourly"),
                      tz = c("utc", "est", "user"), curlHandle,
                      verbose = FALSE, orgJSON = FALSE) {
   
@@ -74,10 +73,8 @@ getRanks <- function(product_ids, country = "US", category,
   tz <- match.arg(tz)
   product_ids <- paste(product_ids, collapse = ";")
   country <- paste(country, collapse = ";")
-  uri <- paste(BASE_URI, "ranks", product_ids, granularity,
-               start_date, end_date, sep = "/")
-  parList <- c(format = 'json', tz = tz, countries = country,
-               filter = filter)
+  uri <- paste(BASE_URI, "ranks", product_ids, granularity, start_date, end_date, sep = "/")
+  parList <- c(format = 'json', tz = tz, countries = country, filter = filter)
   
   if (missing(curlHandle)) {
     opts <- list(userpwd = paste(USERNAME, PASSWORD, sep = ":"),
@@ -119,7 +116,8 @@ parseRanks <- function(jsonText) {
   dd <- nrow(datr$data)
   delts <- unlist(lapply(datr$data$positions,
                          function(ll) c(NA, diff(ll))))
-  if (rr == 0 || is.null(dd)) return(data.frame())
+  if (rr == 0 || is.null(dd))
+    return(data.frame())
   data.frame(
     time_stamp = as.POSIXct(rep(datr$dates, dd),
                             format = "%Y-%m-%dT%H:%M:%S"),
@@ -194,6 +192,9 @@ getRankSnapshot <- function(tsmp = "current", country = "US",
                             curlHandle, verbose = FALSE, orgJSON = FALSE) {
   
   subcategory <- match.arg(subcategory)
+  stopifnot(length(country) == 1,
+            length(category) == 1,
+            length(tsmp) == 1)
   if (tsmp != "current") {
     tsmp <- paste(substr(tsmp, 1, 10), "T", substr(tsmp, 12, 13), sep = "")
   }
@@ -306,8 +307,7 @@ stackSnapshots <- function(tsmps, curlHandle = NULL, verbose = F, ...) {
   } else {
     curlHandle = curlHandle
   }
-  output <- lapply(tsmps, getRankSnapshot, curlHandle = curlHandle,
-                   ...)
+  output <- lapply(tsmps, getRankSnapshot, curlHandle = curlHandle, ...)
   output <- do.call(rbind, output)
   attr(output, 'balanced') <- FALSE
   output
