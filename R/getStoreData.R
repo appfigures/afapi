@@ -98,7 +98,7 @@ getStoreData <- function(tables = c("categories", "countries",
                   })
     output <- do.call(rbind, dat)
     return(output)
-  } else if (tables == "stores") {
+  } else if (tables == "stores") { 
     return(parseFullStoreData(jsonText))
   } else {
     return("Something is broken.")
@@ -115,6 +115,8 @@ getStoreData <- function(tables = c("categories", "countries",
 
 parseFullStoreData <- function(jsonText) {
   datr <- fromJSON(jsonText)
+  idx <- which(names(datr) %in%
+                 c("apple", "google_play", "amazon_appstore", "windows_phone", "windows10"))
   # store formatting
   format_stores <- function(lst) {
     st_dat <- data.frame(lst[1:5],
@@ -132,15 +134,16 @@ parseFullStoreData <- function(jsonText) {
          store_countries = st_ctry,
          store_categories = st_cats)
   }
-  stores <- lapply(datr[1:3], format_stores)
+  stores <- lapply(datr[idx], format_stores)
   # ad network formatting
   format_adnetworks <- function(lst) {
     data.frame(t(unlist(lst[1:6])),
                lst$countries,
                stringsAsFactors = F)
   }
-  adnetworks <- lapply(datr[4:length(datr)], format_adnetworks)
-  adnetworks <- do.call(rbind, adnetworks)
+  adnetworks <- lapply(datr[-idx], format_adnetworks)
+  bb <- grep("blackberry", names(adnetworks))
+  adnetworks <- do.call(rbind, adnetworks[-bb])
   adnetworks$code <- as.numeric(adnetworks$code)
   adnetworks$apple_store_no <- as.numeric(adnetworks$apple_store_no)
   names(adnetworks)[8] <- "country"
@@ -149,4 +152,5 @@ parseFullStoreData <- function(jsonText) {
   list(apple = stores[[1]], google_play = stores[[2]],
        amazon_appstore = stores[[3]],
        adnetworks = adnetworks)
-}
+}  
+
