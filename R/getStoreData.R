@@ -149,8 +149,8 @@ parseFullStoreData <- function(jsonText) {
   names(adnetworks)[8] <- "country"
   row.names(adnetworks) <- NULL
   
-  list(apple = stores[[1]], google_play = stores[[2]],
-       amazon_appstore = stores[[3]],
-       adnetworks = adnetworks)
+  list(apple = stores[["apple"]], google_play = stores[["google_play"]],
+       amazon_appstore = stores[["amazon_appstore"]], windows10 = stores[["windows10"]],
+       windows_phone = stores[["windows_phone"]], adnetworks = adnetworks)
 }  
 
