@@ -16,7 +16,7 @@
 #' @param group_by Character. Choose one or more of:
 #' \code{"dates", "products", "store", "countries", or "regions"}
 #' 
-#' @param country Character. One or more country iso abbreviations.
+#' @param country Character. One or more country iso2 abbreviations.
 #' Defaults to all countries.
 #' 
 #' @param networks Character. One or more ad networks. See Details.
@@ -33,10 +33,13 @@
 #' specific to the function call.
 #' 
 #' @param verbose Logical. Should details of the web request
-#' print to the console? Defaults to \code{FALSE}.
+#' print to the console? Defaults to \code{FALSE}. Irrelevant if 
+#' \code{format = 'csv'}.
 #' 
 #' @param orgJSON Logical. Should the JSON string be returned
-#' without being converted to R objects? Defaults to \code{FALSE}.
+#' without being converted to R objects? Defaults to \code{FALSE}. If 
+#' \code{format = 'csv'}, the data is returned as a character string in
+#' csv format.
 #' 
 #' @details For \code{start_date} and \code{end_date}, if the
 #' supplied argument can be interepreted as a date or POSIX
@@ -113,13 +116,12 @@ getAdReport <- function(product_ids, end_date, start_date,
     curlHandle = curlHandle
   }
   jsonText <- getForm(uri, .opts = opts, .params = parList)
-  if (orgJSON | format == "json") {
+  if (orgJSON || format == "json") {
     return(jsonText) 
   }
   if (format == "csv") {
     conn <- textConnection(jsonText)
-    out <- read.csv(file = conn, header = T,
-                    stringsAsFactors = F)
+    out <- read.csv(file = conn, header = T, stringsAsFactors = F)
     close(conn)
     return(out)
   }
