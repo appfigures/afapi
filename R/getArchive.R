@@ -89,7 +89,7 @@ getLatestReport <- function(type = c("all", "daily", "weekly", "monthly",
                             curlHandle, verbose = FALSE, orgJSON = FALSE) {
   
   type <- match.arg(type)
-  parList <- c(type = type, format = 'json')
+  parList <- c(type = type, format = 'flat')
   uri <- paste(BASE_URI, "archive", "latest", sep = "/")
   if (missing(curlHandle)) {
     opts <- list(userpwd = paste(USERNAME, PASSWORD, sep = ":"),
@@ -158,14 +158,9 @@ getRawReport <- function(id, curlHandle, verbose = FALSE) {
 
 parseArchiveReport <- function(jsonText) {
   datr <- fromJSON(jsonText)
-  out <- data.frame(
-    report_id = vapply(datr, `[[`, integer(1), "id"),
-    report_type = vapply(datr, `[[`, character(1), "type"),
-    ext_acct_id = vapply(datr, `[[`, integer(1), "external_account_id"),
-    report_date = vapply(datr, `[[`, character(1), "report_timestamp"),
-    import_date = vapply(datr, `[[`, character(1), "import_timestamp"),
-    import_method = vapply(datr, `[[`, character(1), "import_method"),
-    stringsAsFactors = F, row.names = NULL)
+  out <- datr[[2]]
+  names(out) <- c("report_id", "type", "ext_acct_id", "report_date", "import_date",
+                  "region", "import_method")
   out$report_date <- as.POSIXct(out$report_date, "UTC",
                                 format = "%Y-%m-%dT%H:%M:%S")
   out$import_date <- as.POSIXct(out$import_date, "UTC",
