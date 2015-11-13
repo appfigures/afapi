@@ -4,18 +4,17 @@ afapi is an R interface for the appFigures API. It uses RCurl for html requests 
 
 ## Installation
 
-To install the dependencies, use the CRAN repository:
+Install the development version from github:
 
+```R
+install.packages("devtools")
+devtools::install_github("appfigures/appfigures-r")
+```
+
+The package dependencies should install automatically as we, but if they don't, download directly:
 ```R
 install.packages("RCurl")
 install.packages("jsonlite")
-```
-
-The development version from github:
-
-```R
-# install.packages("devtools")
-devtools::install_github("appfigures/appfigures-r")
 ```
 
 The following examples demonstrate the basics of how to get up and running with afapi.
