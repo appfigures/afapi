@@ -160,7 +160,7 @@ parseArchiveReport <- function(jsonText) {
   datr <- fromJSON(jsonText)
   out <- datr[[2]]
   names(out) <- c("report_id", "type", "ext_acct_id", "report_date", "import_date",
-                  "region", "import_method")
+                  "region", "import_method") 
   out$report_date <- as.POSIXct(out$report_date, "UTC",
                                 format = "%Y-%m-%dT%H:%M:%S")
   out$import_date <- as.POSIXct(out$import_date, "UTC",
