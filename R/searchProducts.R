@@ -79,19 +79,22 @@ searchProducts <- function(term, filter = NULL, page = 1, count = 25,
 parseSearch <- function(jsonText) {
   datr <- fromJSON(jsonText)
   if (length(datr[[1]]) <= 1) {
-    out <- as.data.frame(t(unlist(datr)), stringsAsFactors = F)
-    names(out)[1:2] <- c("product_id", "p_name")
-    return(out)
+    datr <- cbind(datr, datr$source, stringsAsFactors = F)
+    datr$storefronts <- paste(unlist(datr$storefronts), collapse = "/")
+    datr$accessible_features <- paste(unlist(datr$accessible_features), collapse = "/")
+    datr$source <- datr$children <- datr$parent <- datr$features <- NULL
+    datr$added_timestamp <- NULL
   }
   device <- vapply(datr$devices,
                    function(x) ifelse(identical(x, character(0)), NA_character_, x),
                    character(1))
   price <- datr$price
+  price$price <- as.numeric(price$price)
   datr$devices <- device
   datr$price <- NULL
-  datr$added_date <- as.Date(datr$added_date)
-  datr$release_date <- as.Date(datr$release_date)
-  datr$updated_date <- as.Date(datr$updated_date)
+  datr$added_date <- as.POSIXct(datr$added_date, format = "%Y-%m-%dT%H:%M:%S")
+  datr$release_date <- as.POSIXct(datr$release_date, format = "%Y-%m-%dT%H:%M:%S")
+  datr$updated_date <- as.POSIXct(datr$updated_date, format = "%Y-%m-%dT%H:%M:%S")
   names(datr)[1:2] <- c("product_id", "p_name")
   cbind(datr, price)
 }
