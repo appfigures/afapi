@@ -233,6 +233,7 @@ parseFeaturedSummary <- function(jsonText) {
     attr(df, "countries") <- lst[["countries"]]
     df
   }
+  
   lapply(datr, parseLists)
 }
 
@@ -333,14 +334,18 @@ parseFeaturedCounts <- function(jsonText) {
   jsonText <- gsub('null', -999, jsonText)
   datr <- fromJSON(jsonText)
   nrs <- vapply(datr[[2]], nrow, numeric(1), USE.NAMES = F)
+  for (jj in which(nrs == 0))
+    datr$products[[jj]] <- data.frame(product_id = NA_real_, featured_count = NA_real_)
+  nrs[nrs == 0] <- 1
   products <- do.call(rbind, datr[[2]])
   start_date <- vapply(datr[[1]], `[`, 1, FUN.VALUE = character(1))
   start_date <- rep(start_date, times = nrs)
   end_date <- vapply(datr[[1]], `[`, 2, FUN.VALUE = character(1))
   end_date <- rep(end_date, times = nrs)
-  data.frame(cbind(products,
-                   start_date = start_date,
-                   end_date = end_date))
+  out <- data.frame(cbind(products, 
+                          start_date = start_date,
+                          end_date = end_date))
+  out[order(out$start_date, decreasing = TRUE), ]
 }
 
 
