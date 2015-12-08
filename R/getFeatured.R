@@ -12,7 +12,7 @@
 #' @param start_date Character string or date object. Date of first
 #' ranks to be reported. Defaults to the last 31 days. See Details.
 #' 
-#' @param country. One or more country iso codes. Defaults to all
+#' @param country One or more country iso codes. Defaults to all
 #' countries. See Details.
 #' 
 #' @param curlHandle Provide an instance of the CURLHandle-class
@@ -28,7 +28,10 @@
 #' @details For \code{start_date} and \code{end_date}, if the
 #' supplied argument can be interepreted as a date or POSIX
 #' object, any hour, minute, or second is ignored. If a string
-#' is supplied, it should have the format: 'yyyy-MM-dd'.
+#' is supplied, it should have the format: 'yyyy-MM-dd'. The largest
+#' date range for a feature report is limited to 31 days. Anything
+#' larger will return an error.
+#' 
 #' 
 #' For \code{country} arguments, a complete list of supported
 #' languages can be found using \code{\link{getStoreData}}.
@@ -165,13 +168,15 @@ parseFeaturedReport <- function(jsonText, pid) {
 #' 
 #' @return A list of dataframes, one for each product id.
 #' 
+#' @details The list of countries included in the request is included as an
+#' attribute.
+#' 
 #' @seealso Official documentation: 
 #' \url{http://docs.appfigures.com/api/reference/v2/featured}.
 #' 
 
-getFeaturedSummary <- function(product_ids, end_date, start_date,
-                               curlHandle, verbose = FALSE,
-                               orgJSON = FALSE) {
+getFeaturedSummary <- function(product_ids, end_date, start_date, curlHandle,
+                               verbose = FALSE, orgJSON = FALSE) {
   
   if (missing(end_date)) {
     end_date <- as.character(Sys.Date())
@@ -283,9 +288,8 @@ parseFeaturedSummary <- function(jsonText) {
 #' \url{http://docs.appfigures.com/api/reference/v2/featured}.
 #' 
 
-getFeaturedCounts <- function(product_ids, end_date, count = 5,
-                              granularity = c("weekly", "daily"),
-                              show_empty = FALSE, curlHandle,
+getFeaturedCounts <- function(product_ids, end_date, count = 5, show_empty = FALSE,
+                              granularity = c("weekly", "daily"), curlHandle,
                               verbose = FALSE, orgJSON = FALSE) {
   # show_empty will always be false for data management
   
@@ -372,11 +376,6 @@ parseFeaturedCounts <- function(jsonText) {
 #' @param orgJSON Logical. Should the JSON string be returned
 #' without being converted to R objects? Defaults to \code{FALSE}.
 #' 
-#' @details For \code{end_date}, if the supplied argument can be
-#' interepreted as a date or POSIX object, any hour, minute, or
-#' second is ignored. If a string is supplied, it should have
-#' the format: 'yyyy-MM-dd'.
-#' 
 #' @return A list of dataframes, one for each product id.
 #' 
 #' @seealso Official documentation: 
@@ -384,8 +383,7 @@ parseFeaturedCounts <- function(jsonText) {
 #' 
 
 
-getFeaturedHistory <- function(product_id, feature_id,
-                               curlHandle, verbose = FALSE,
+getFeaturedHistory <- function(product_id, feature_id, curlHandle, verbose = FALSE,
                                orgJSON = FALSE) {
   
   stopifnot(!missing(product_id), !missing(feature_id))
