@@ -22,7 +22,7 @@ ranks to be reported. Defaults to the last 31 days. See Details.}
 \item{group_by}{Character. Choose one or more of:
 \code{"dates", "products", "store", "countries", or "regions"}}
 
-\item{country}{Character. One or more country iso abbreviations.
+\item{country}{Character. One or more country iso2 abbreviations.
 Defaults to all countries.}
 
 \item{networks}{Character. One or more ad networks. See Details.}
@@ -39,10 +39,13 @@ from the RCurl package. The default will create a curl handle
 specific to the function call.}
 
 \item{verbose}{Logical. Should details of the web request
-print to the console? Defaults to \code{FALSE}.}
+print to the console? Defaults to \code{FALSE}. Irrelevant if
+\code{format = 'csv'}.}
 
 \item{orgJSON}{Logical. Should the JSON string be returned
-without being converted to R objects? Defaults to \code{FALSE}.}
+without being converted to R objects? Defaults to \code{FALSE}. If
+\code{format = 'csv'}, the data is returned as a character string in
+csv format.}
 }
 \value{
 A data frame containing the requested ad report.

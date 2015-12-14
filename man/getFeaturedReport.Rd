@@ -17,6 +17,9 @@ to be reported. Defaults to today. See Details.}
 \item{start_date}{Character string or date object. Date of first
 ranks to be reported. Defaults to the last 31 days. See Details.}
 
+\item{country}{One or more country iso codes. Defaults to all
+countries. See Details.}
+
 \item{curlHandle}{Provide an instance of the CURLHandle-class
 from the RCurl package. The default will create a curl handle
 specific to the function call.}
@@ -26,9 +29,6 @@ print to the console? Defaults to \code{FALSE}.}
 
 \item{orgJSON}{Logical. Should the JSON string be returned
 without being converted to R objects? Defaults to \code{FALSE}.}
-
-\item{country.}{One or more country iso codes. Defaults to all
-countries. See Details.}
 }
 \value{
 A single R dataframe.
@@ -41,7 +41,10 @@ data from the appFigures web API
 For \code{start_date} and \code{end_date}, if the
 supplied argument can be interepreted as a date or POSIX
 object, any hour, minute, or second is ignored. If a string
-is supplied, it should have the format: 'yyyy-MM-dd'.
+is supplied, it should have the format: 'yyyy-MM-dd'. The largest
+date range for a feature report is limited to 31 days. Anything
+larger will return an error.
+
 
 For \code{country} arguments, a complete list of supported
 languages can be found using \code{\link{getStoreData}}.

@@ -26,10 +26,13 @@ into. See Details.}
 
 \item{author}{Character. Name of an author to filter reviews.}
 
+\item{country}{One or more country iso codes. Defaults to all
+countries. See Details.}
+
 \item{stars}{Integer. Values of one to five to filter reviews on.
 Defaults to reviews with any number of stars.}
 
-\item{sort}{Character. How to sor the resulting reviews. Choose
+\item{sort}{Character. How to sort the resulting reviews. Choose
 from \code{"date", "country", or "stars"}. Defaults to \code{"date"}.}
 
 \item{start_date}{Character string or date object. Date of first
@@ -47,9 +50,6 @@ print to the console? Defaults to \code{FALSE}.}
 
 \item{orgJSON}{Logical. Should the JSON string be returned
 without being converted to R objects? Defaults to \code{FALSE}.}
-
-\item{country.}{One or more country iso codes. Defaults to all
-countries. See Details.}
 
 \item{versions}{Character. One of more version numbers of an app to
 filter reviews on.}
@@ -70,6 +70,11 @@ is supplied, it should have the format: 'yyyy-MM-dd'.
 Regarding the \code{lang} and \code{country} arguments, a
 complete list of supported languages can be found using
 \code{\link{getStoreData}}.
+
+Also, since the results are paginated, the returned data frame
+has an attached attribute called 'header', which provides data
+on the total number of reviews available, the current page number,
+and the total number of pages (given 'count' = xx).d
 }
 \seealso{
 Official documentation:

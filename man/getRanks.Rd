@@ -20,8 +20,8 @@ filter which countries rank data to include. Defaults to "US".}
 \item{end_date}{Character string or date object. Date of last ranks
 to be reported. Defaults to today. See Details.}
 
-\item{start_date}{Character string or date object. Date of first
-ranks to be reported. Defaults to the last 31 days. See Details.}
+\item{start_date}{Character string or date object. Date of first ranks to be
+reported. Defaults to 31 days prior to the \code{end_date}. See Details.}
 
 \item{filter}{Limit results to ranks in the top N with N being a
 number between 1 and 400. A filter value of 100 will only show

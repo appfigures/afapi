@@ -31,12 +31,6 @@ A list of dataframes, one for each product id.
 \code{getFeaturedHistory} provides access to detailed featured
 data from the appFigures web API
 }
-\details{
-For \code{end_date}, if the supplied argument can be
-interepreted as a date or POSIX object, any hour, minute, or
-second is ignored. If a string is supplied, it should have
-the format: 'yyyy-MM-dd'.
-}
 \seealso{
 Official documentation:
 \url{http://docs.appfigures.com/api/reference/v2/featured}.

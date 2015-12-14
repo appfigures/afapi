@@ -4,9 +4,9 @@
 \alias{getFeaturedCounts}
 \title{Retrieve featured count reports.}
 \usage{
-getFeaturedCounts(product_ids, end_date, count = 5,
-  granularity = c("weekly", "daily"), show_empty = FALSE, curlHandle,
-  verbose = FALSE, orgJSON = FALSE)
+getFeaturedCounts(product_ids, end_date, count = 5, show_empty = FALSE,
+  granularity = c("weekly", "daily"), curlHandle, verbose = FALSE,
+  orgJSON = FALSE)
 }
 \arguments{
 \item{product_ids}{Numeric. A vector of appFigures-assigned
@@ -18,12 +18,12 @@ to be reported. Defaults to today. See Details.}
 \item{count}{Integer. Max number of entries to show. Defaults to
 five.}
 
-\item{granularity}{Character. Either \code{"weekly" or "daily"}.
-Defaults to \code{"weekly"}.}
-
 \item{show_empty}{Logical. If set to \code{TRUE}, this call will
 return the last count periods whether or not they have data.
 Defaults to \code{FALSE}.}
+
+\item{granularity}{Character. Either \code{"weekly" or "daily"}.
+Defaults to \code{"weekly"}.}
 
 \item{curlHandle}{Provide an instance of the CURLHandle-class
 from the RCurl package. The default will create a curl handle

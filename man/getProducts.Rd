@@ -4,12 +4,12 @@
 \alias{getProducts}
 \title{Retrieve products by store id or by appFigures-assigned id.}
 \usage{
-getProducts(id, store = c("all", "apple", "google", "amazon", "windows"),
-  curlHandle, verbose = FALSE, orgJSON = FALSE)
+getProducts(product_id, store = c("all", "apple", "google", "amazon",
+  "windows"), curlHandle, verbose = FALSE, orgJSON = FALSE)
 }
 \arguments{
-\item{id}{Either the string value \code{"mine"} or the id of a
-specific product.}
+\item{product_id}{Either the string value \code{"mine"} or the id of a
+specific product. See Details.}
 
 \item{store}{A character string to filter products by store.
 Defaults to "all" stores.}

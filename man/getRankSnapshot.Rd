@@ -4,23 +4,24 @@
 \alias{getRankSnapshot}
 \title{Retrieve a cross section of rank data.}
 \usage{
-getRankSnapshot(tsmp = "current", country = "US", category = 25204,
-  subcategory = c("free", "paid", "topgrossing"), count = 400, start = 1,
-  tz = "utc", curlHandle, verbose = FALSE, orgJSON = FALSE)
+getRankSnapshot(tsmp = "current", category = 25204,
+  subcategory = c("free", "paid", "topgrossing"), country = "US",
+  count = 400, start = 1, tz = "utc", curlHandle, verbose = FALSE,
+  orgJSON = FALSE)
 }
 \arguments{
 \item{tsmp}{Either the string "current" (default) or a string
 with the format: "yyyy-MM-ddTHH". Only the last 24 hours are
 available.}
 
-\item{country}{Chatacter. A country iso2 abbreviation. Defaults
-to 'US'.}
-
 \item{category}{Numeric. The numeric category of the requested
 snapshot. Defaults to \code{25204} (top overall).}
 
 \item{subcategory}{Character. The sub-category of the requested
 snapshot. Defaults to \code{"free"}.}
+
+\item{country}{Chatacter. A country iso2 abbreviation. Defaults
+to 'US'.}
 
 \item{count}{Numeric. The total number of the ranks to return.
 See Details.}

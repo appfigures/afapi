@@ -37,7 +37,7 @@ containing the relevant metadata available across all stores. If
 \code{tables} is set to \code{"stores"}, a list of five data frames
 is returned. The first four data frames in the list contains all
 metadata relevant for a particular store (e.g. apple, google_play,
-ect.). The last data frame summarizes all the supported ad
+etc.). The last data frame summarizes all the supported ad
 networks.
 }
 \seealso{
