@@ -14,8 +14,8 @@
 #' @param end_date Character string or date object. Date of last ranks
 #' to be reported. Defaults to today. See Details.
 #' 
-#' @param start_date Character string or date object. Date of first
-#' ranks to be reported. Defaults to the last 31 days. See Details.
+#' @param start_date Character string or date object. Date of first ranks to be
+#' reported. Defaults to 31 days prior to the \code{end_date}. See Details.
 #' 
 #' @param filter Limit results to ranks in the top N with N being a
 #' number between 1 and 400. A filter value of 100 will only show 
@@ -66,7 +66,7 @@ getRanks <- function(product_ids, country = "US", category, end_date, start_date
     end_date <- as.character(Sys.Date())
   } else end_date <- as.character(as.Date(end_date))
   if (missing(start_date)) {
-    start_date <- as.character(Sys.Date() - 31)
+    start_date <- as.character(end_date - 31)
   } else start_date <- as.character(as.Date(start_date))
   
   granularity <- match.arg(granularity)
@@ -119,8 +119,7 @@ parseRanks <- function(jsonText) {
   if (rr == 0 || is.null(dd))
     return(data.frame())
   data.frame(
-    time_stamp = as.POSIXct(rep(datr$dates, dd),
-                            format = "%Y-%m-%dT%H:%M:%S"),
+    time_stamp = as.POSIXct(rep(datr$dates, dd), format = "%Y-%m-%dT%H:%M:%S"),
     product_id = rep(datr$data$product_id, each = rr),
     rank = unlist(datr$data$positions),
     iso2 = rep(datr$data$country, each = rr),
@@ -185,10 +184,9 @@ parseRanks <- function(jsonText) {
 #' \url{http://docs.appfigures.com/api/reference/v2/ranks}.
 #' 
 
-getRankSnapshot <- function(tsmp = "current", country = "US",
-                            category = 25204,
+getRankSnapshot <- function(tsmp = "current", category = 25204,                            
                             subcategory = c("free", "paid", "topgrossing"),
-                            count = 400, start = 1, tz = 'utc',
+                            country = "US", count = 400, start = 1, tz = 'utc',
                             curlHandle, verbose = FALSE, orgJSON = FALSE) {
   
   subcategory <- match.arg(subcategory)
@@ -199,10 +197,8 @@ getRankSnapshot <- function(tsmp = "current", country = "US",
     tsmp <- paste(substr(tsmp, 1, 10), "T", substr(tsmp, 12, 13), sep = "")
   }
   uri <- paste(BASE_URI, "ranks", "snapshots", tsmp, country, category,
-               subcategory,
-               sep = "/")
-  parList <- list(count = count, start = start - 1, format = 'json',
-                  tz = tz)
+               subcategory, sep = "/")
+  parList <- list(count = count, start = start - 1, format = 'json', tz = tz)
   if (missing(curlHandle)) {
     opts <- list(userpwd = paste(USERNAME, PASSWORD, sep = ":"),
                  httpheader = c('X-Client-Key' = API_KEY),
@@ -252,9 +248,10 @@ parseSnapshot <- function(jsonText) {
     c_id = datr$category$id,
     c_name = datr$category$name,
     c_subcat = datr$category$subtype,
-    released = as.Date(datr$entries$release_date),
-    added = as.Date(datr$entries$added_date),
-    updated = as.Date(datr$entries$updated_date)
+    released = as.POSIXct(datr$entries$release_date, format = "%Y-%m-%dT%H:%M:%S"),
+    added = as.POSIXct(datr$entries$added_date, format = "%Y-%m-%dT%H:%M:%S"),
+    updated = as.POSIXct(datr$entries$updated_date, format = "%Y-%m-%dT%H:%M:%S"),
+    stringsAsFactors = F
   )
 }
 

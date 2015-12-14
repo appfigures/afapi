@@ -3,8 +3,8 @@
 #' \code{getProducts} requests product specific data from the
 #' appFigures web API. 
 #'
-#' @param id Either the string value \code{"mine"} or the id of a
-#' specific product. 
+#' @param product_id Either the string value \code{"mine"} or the id of a
+#' specific product. See Details.
 #' 
 #' @param store A character string to filter products by store.
 #' Defaults to "all" stores.
