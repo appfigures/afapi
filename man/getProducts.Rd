@@ -4,7 +4,7 @@
 \alias{getProducts}
 \title{Retrieve products by store id or by appFigures-assigned id.}
 \usage{
-getProducts(product_id, store = c("all", "apple", "google", "amazon",
+getProducts(product_id, store = c("all", "apple", "google_play", "amazon",
   "windows"), curlHandle, verbose = FALSE, orgJSON = FALSE)
 }
 \arguments{
