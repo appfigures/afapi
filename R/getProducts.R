@@ -30,9 +30,9 @@
 #' \url{http://docs.appfigures.com/products}.
 #' 
 
-getProducts <- function(product_id, store = c("all", "apple", "google",
-                        "amazon", "windows"), curlHandle,
-                        verbose = FALSE, orgJSON = FALSE) {
+getProducts <- function(product_id, store = c("all", "apple", "google_play",
+                        "amazon", "windows"), curlHandle, verbose = FALSE,
+                        orgJSON = FALSE) {
   
   if (missing(product_id))
     product_id <- "mine"
@@ -48,8 +48,8 @@ getProducts <- function(product_id, store = c("all", "apple", "google",
       parList <- NULL
     } else if(store != "all" && !missing(product_id)) {
       message("Assuming `product_id` is store specific id.")
-      uri <- sprintf(paste(BASE_URI, "products", "%s", sep = "/"), product_id)
-      parList <- NULL
+      uri <- sprintf(paste(BASE_URI, "products", store, "%s", sep = "/"),
+                     product_id)
     } else stop("appFigures or Store `id` must be specified for this function.")
   }
   if (missing(curlHandle)) {
