@@ -44,10 +44,10 @@ getStoreData <- function(tables = c("categories", "countries",
                  httpheader = c('X-Client-Key' = API_KEY),
                  httpauth = 1L, verbose = verbose, ssl.verifypeer = FALSE)
     curlHandle <- getCurlHandle(.opts = opts)
-  } else if (class(curlHandle) != "CURLHandle") {
+  } else if (!inherits(curlHandle, "CURLHandle")) {
     stop("curlHandle must be of class 'CURLHandle'.")
   } else {
-    curlHandle = curlHandle
+    curlHandle <- curlHandle
   }
   jsonText <- getForm(uri, curl = curlHandle)
   if (orgJSON) {
@@ -115,8 +115,8 @@ getStoreData <- function(tables = c("categories", "countries",
 
 parseFullStoreData <- function(jsonText) {
   datr <- fromJSON(jsonText)
-  idx <- which(names(datr) %in%
-                 c("apple", "google_play", "amazon_appstore", "windows_phone", "windows10"))
+  idx <- which(names(datr) %in% c("apple", "google_play", "amazon_appstore",
+                                  "windows_phone", "windows10"))
   # store formatting
   format_stores <- function(lst) {
     st_dat <- data.frame(lst[1:5],

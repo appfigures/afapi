@@ -34,7 +34,7 @@
 #' Fields containing meta data will be added later.
 #' 
 #' @seealso Official documentation:
-#' \url{http://docs.appfigures.com/products#Searching_for_products}.
+#' \url{http://docs.appfigures.com/products#searching_for_products}.
 #' 
 
 searchProducts <- function(term, filter = NULL, page = 1, count = 25,
@@ -53,10 +53,10 @@ searchProducts <- function(term, filter = NULL, page = 1, count = 25,
                  httpheader = c('X-Client-Key' = API_KEY),
                  httpauth = 1L, verbose = verbose, ssl.verifypeer = FALSE)
     curlHandle <- getCurlHandle(.opts = opts)
-  } else if (class(curlHandle) != "CURLHandle") {
+  } else if (!inherits(curlHandle, "CURLHandle")) {
     stop("curlHandle must be of class 'CURLHandle'.")
   } else {
-    curlHandle = curlHandle
+    curlHandle <- curlHandle
   }  
   jsonText <- getForm(uri, curl = curlHandle, .params = parList)
   if (orgJSON) {

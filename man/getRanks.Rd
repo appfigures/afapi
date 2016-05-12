@@ -6,62 +6,65 @@
 \usage{
 getRanks(product_ids, country = "US", category, end_date, start_date,
   filter = 400, granularity = c("daily", "hourly"), tz = c("utc", "est",
-  "user"), curlHandle, verbose = FALSE, orgJSON = FALSE)
+  "user"), curlHandle, verbose = FALSE, orgJSON = FALSE, async = FALSE,
+  agroups = 2)
 }
 \arguments{
-\item{product_ids}{Numeric. A vector of appFigures-assigned
-product ids.}
+\item{product_ids}{Numeric. A vector of appFigures-assigned product ids.}
 
-\item{country}{Character. One or more country iso abbreviations that
-filter which countries rank data to include. Defaults to "US".}
+\item{country}{Character. One or more country iso abbreviations that filter
+which countries rank data to include. Defaults to "US".}
 
 \item{category}{An atomic character or numeric vector. See Details.}
 
-\item{end_date}{Character string or date object. Date of last ranks
-to be reported. Defaults to today. See Details.}
+\item{end_date}{Character string or date object. Date of last ranks to be
+reported. Defaults to today. See Details.}
 
 \item{start_date}{Character string or date object. Date of first ranks to be
 reported. Defaults to 31 days prior to the \code{end_date}. See Details.}
 
-\item{filter}{Limit results to ranks in the top N with N being a
-number between 1 and 400. A filter value of 100 will only show
-records that are ranked 1 - 100. Defaults to 400.}
+\item{filter}{Limit results to ranks in the top N with N being a number
+between 1 and 400. A filter value of 100 will only show records that are
+ranked 1 - 100. Defaults to 400.}
 
-\item{granularity}{Character. Should ranks be reported on a daily or
-hourly basis.}
+\item{granularity}{Character. Should ranks be reported on a daily or hourly
+basis.}
 
-\item{tz}{Character. Specifies which timezone to use. Defaults to
-'est'.}
+\item{tz}{Character. Specifies which timezone to use. Defaults to \code{utc}.}
 
-\item{curlHandle}{Provide an instance of the CURLHandle-class
-from the RCurl package. The default will create a curl handle
-specific to the function call.}
+\item{curlHandle}{Provide an instance of the CURLHandle-class from the RCurl
+package. The default will create a curl handle specific to the function call.}
 
-\item{verbose}{Logical. Should details of the web request
-print to the console? Defaults to \code{FALSE}.}
+\item{verbose}{Logical. Should details of the web request print to the
+console? Defaults to \code{FALSE}.}
 
-\item{orgJSON}{Logical. Should the JSON string be returned
-without being converted to R objects? Defaults to \code{FALSE}.}
+\item{orgJSON}{Logical. Should the JSON string be returned with out being
+converted to R objects? Defaults to \code{FALSE}.}
+
+\item{async}{Logical. Should the given product ids be split up into groups
+and and run concurrently? Defaults to \code{FALSE}.}
+
+\item{agroups}{Integer. The number of concurrent calls to make.}
 }
 \value{
-A data frame containing all publicly available fields.
-Fields containing private and meta data will be added later.
+Depends on the selected options. If \code{orgJSON = F}, a data.frame is
+returned. If \code{orgJSON = T}, a character vector of json strings is
+returned, the length of which is determined by the integer specified by
+\code{agroups}.
 }
 \description{
-\code{getRanks} requests rank data for specific products from the
-appFigures web API.
+\code{getRanks} requests rank data for specific products from the appFigures
+API.
 }
 \details{
-The \code{category} argument is not included in the
-web request. Subsetting the returned rank data on this argument
-occurs after the data has been transformed into R objects and is
-included purely as a convenience. Details on store categories
-can be requested using \code{\link{getStoreData}}.
+The \code{category} argument is not included in the web request.
+Subsetting the returned rank data on this argument occurs after the data has
+been transformed into R objects and is included purely as a convenience.
+Details on store categories can be requested using \code{\link{getStoreData}}.
 
-For \code{start_date} and \code{end_date}, if the supplied argument
-can be interepreted as a date or POSIX object, any hour, minute, or
-second is ignored. If a string is supplied, it should have the
-format: 'yyyy-MM-dd'.
+For \code{start_date} and \code{end_date}, if the supplied argument can be
+interepreted as a date or POSIX object, any hour, minute, or second is
+ignored. If a string is supplied, it should have the format: 'yyyy-MM-dd'.
 }
 \seealso{
 Official documentation:

@@ -9,36 +9,33 @@ getProducts(product_id, store = c("all", "apple", "google", "amazon",
 }
 \arguments{
 \item{product_id}{Either the string value \code{"mine"} or the id of a
-specific product. See Details.}
+specific product. Defaults to \code{"mine"}. See Details.}
 
-\item{store}{A character string to filter products by store.
-Defaults to "all" stores.}
+\item{store}{A character string to filter products by store. Defaults to
+"all" stores.}
 
-\item{curlHandle}{Provide an instance of the CURLHandle-class
-from the RCurl package. The default will create a curl handle
-specific to the function call.}
+\item{curlHandle}{Provide an instance of the CURLHandle-class from the RCurl
+package. The default will create a curl handle specific to the function call.}
 
-\item{verbose}{Logical. Should details of the web request
-print to the console? Defaults to \code{FALSE}.}
+\item{verbose}{Logical. Should details of the web request print to the
+console? Defaults to \code{FALSE}.}
 
-\item{orgJSON}{Logical. Should the JSON string be returned
-without being converted to R objects? Defaults to \code{FALSE}.}
+\item{orgJSON}{Logical. Should the JSON string be returned without being
+converted to R objects? Defaults to \code{FALSE}.}
 }
 \value{
 A data frame containing all publicly available fields.
-Fields containing private and meta data will be added later.
 }
 \description{
-\code{getProducts} requests product specific data from the
-appFigures web API.
+\code{getProducts} requests product specific data from the appFigures API.
 }
 \details{
-Products represent a trackable item in the appFigures
-system. Products can be an app as well as an in-app purchase
-or book. The user can request data on all their products by
-setting the id variable to \code{"mine"}. Data for a single
-product can be requested by either its store specific id or
-its appFigures-assigned id.
+Products represent a trackable item in the appFigures system.
+Products can be an app as well as an in-app purchase or book. The user can
+request data on all their products by setting the id variable to
+\code{"mine"}. Data for products can be requested by either their store
+specific ids or by their appFigures-assigned ids. If more than one product_id
+is supplied, the requests are made concurrently.
 }
 \seealso{
 Official documentation:

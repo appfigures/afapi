@@ -46,6 +46,6 @@ will return an error. Instead, separate multiple terms with '+'.
 }
 \seealso{
 Official documentation:
-\url{http://docs.appfigures.com/products#Searching_for_products}.
+\url{http://docs.appfigures.com/products#searching_for_products}.
 }
 

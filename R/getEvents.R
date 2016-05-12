@@ -29,10 +29,10 @@ getEvents <- function(curlHandle, verbose = FALSE,
                  httpheader = c('X-Client-Key' = API_KEY),
                  httpauth = 1L, verbose = verbose, ssl.verifypeer = FALSE)
     curlHandle <- getCurlHandle(.opts = opts)
-  } else if (class(curlHandle) != "CURLHandle") {
+  } else if (!inherits(curlHandle, "CURLHandle")) {
     stop("curlHandle must be of class 'CURLHandle'.")
   } else {
-    curlHandle = curlHandle
+    curlHandle <- curlHandle
   }
   jsonText <- getForm(uri, curl = curlHandle, .params = parList)
   if (orgJSON) {
@@ -104,10 +104,10 @@ createEvent <- function(caption, date, details, products,
                                 'Content-Type' = "application/json"),
                  httpauth = 1L, verbose = verbose, ssl.verifypeer = FALSE)
     curlHandle <- getCurlHandle(.opts = opts)
-  } else if (class(curlHandle) != "CURLHandle") {
+  } else if (!inherits(curlHandle, "CURLHandle")) {
     stop("curlHandle must be of class 'CURLHandle'.")
   } else {
-    curlHandle = curlHandle
+    curlHandle <- curlHandle
   }
   event <- data.frame(caption = caption, date = date,
                     details = details, stringsAsFactors = F)

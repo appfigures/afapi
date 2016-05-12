@@ -4,54 +4,55 @@
 \alias{getRankSnapshot}
 \title{Retrieve a cross section of rank data.}
 \usage{
-getRankSnapshot(tsmp = "current", category = 25204,
-  subcategory = c("free", "paid", "topgrossing"), country = "US",
-  count = 400, start = 1, tz = "utc", curlHandle, verbose = FALSE,
-  orgJSON = FALSE)
+getRankSnapshot(timestamp, category = 25204, subcategory = c("free", "paid",
+  "topgrossing"), country = "US", count = 400, start = 1, tz = "utc",
+  curlHandle, verbose = FALSE, orgJSON = FALSE, async = FALSE)
 }
 \arguments{
-\item{tsmp}{Either the string "current" (default) or a string
-with the format: "yyyy-MM-ddTHH". Only the last 24 hours are
-available.}
+\item{timestamp}{Either the string "current" (default) or a string with the
+format: "yyyy-MM-ddTHH". Only the last 24 hours are available.}
 
-\item{category}{Numeric. The numeric category of the requested
-snapshot. Defaults to \code{25204} (top overall).}
+\item{category}{Numeric. The numeric category of the requested snapshot.
+Defaults to \code{25204} (ios top overall).}
 
-\item{subcategory}{Character. The sub-category of the requested
-snapshot. Defaults to \code{"free"}.}
+\item{subcategory}{Character. The sub-category of the requested#' snapshot.
+Defaults to \code{"free"}.}
 
-\item{country}{Chatacter. A country iso2 abbreviation. Defaults
-to 'US'.}
+\item{country}{Chatacter. A country iso2 abbreviation. Defaults to 'US'.}
 
-\item{count}{Numeric. The total number of the ranks to return.
-See Details.}
+\item{count}{Numeric. The total number of the ranks to return. See Details.}
 
 \item{start}{Smallest rank value the request returns. See Details.}
 
-\item{curlHandle}{Provide an instance of the CURLHandle-class
-from the RCurl package. The default will create a curl handle
-specific to the function call.}
+\item{curlHandle}{Provide an instance of the CURLHandle-class from the RCurl
+package. The default will create a curl handle specific to the function call.}
 
-\item{verbose}{Logical. Should details of the web request
-print to the console? Defaults to \code{FALSE}.}
+\item{verbose}{Logical. Should details of the web request print to the
+console? Defaults to \code{FALSE}.}
 
-\item{orgJSON}{Logical. Should the JSON string be returned
-without being converted to R objects? Defaults to \code{FALSE}.}
+\item{orgJSON}{Logical. Should the JSON string be returned without being
+converted to R objects? Defaults to \code{FALSE}.}
+
+\item{async}{Logical. Should the given time-stamps run concurrently? Defaults
+to \code{FALSE}. See Details.}
 }
 \value{
 A data frame containing product and category data for
 a cross section of top ranked apps.
 }
 \description{
-\code{getRankSnapshot} requests data for the top ranked apps for
-for a specific hour from the appFigures web API.
+\code{getRankSnapshot} requests data for the top ranked apps for for a
+specific hour from the appFigures web API.
 }
 \details{
-The use of the \code{start} argument differs from the
-official API documentation. A value such as \code{start = 15}
-will return a list of products starting with a rank value of 15.
-If \code{start = 15} and \code{count = 10}, then products data
-for apps ranked from 15 - 24 will be returned.
+The use of the \code{start} argument differs from the official API
+documentation. A value such as \code{start = 15} will return a list of
+products starting with a rank value of 15. If \code{start = 15} and
+\code{count = 10}, then products data for apps ranked from 15 - 24 will be
+returned.
+
+As of now, multiple time-stamp requests are the only input
+variable that can run concurrently.
 }
 \seealso{
 Official documentation:

@@ -25,10 +25,10 @@ getUsage <- function(curlHandle, verbose = FALSE, orgJSON = FALSE) {
                  httpheader = c('X-Client-Key' = API_KEY),
                  httpauth = 1L, verbose = verbose, ssl.verifypeer = FALSE)
     curlHandle <- getCurlHandle(.opts = opts)
-  } else if (class(curlHandle) != "CURLHandle") {
+  } else if (!inherits(curlHandle, "CURLHandle")) {
     stop("curlHandle must be of class 'CURLHandle'.")
   } else {
-    curlHandle = curlHandle
+    curlHandle <- curlHandle
   }
   jsonText <- getForm(uri, curl = curlHandle, .params = parList)
   if (orgJSON) {

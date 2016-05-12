@@ -66,10 +66,10 @@ getFeaturedReport <- function(product_id, end_date, start_date,
                  httpheader = c('X-Client-Key' = API_KEY),
                  httpauth = 1L, verbose = verbose, ssl.verifypeer = FALSE)
     curlHandle <- getCurlHandle(.opts = opts)
-  } else if (class(curlHandle) != "CURLHandle") {
+  } else if (!inherits(curlHandle, "CURLHandle")) {
     stop("curlHandle must be of class 'CURLHandle'.")
   } else {
-    curlHandle = curlHandle
+    curlHandle <- curlHandle
   }
   country <- if (!missing(country)) {
     paste(country, collapse = ";")
@@ -197,10 +197,10 @@ getFeaturedSummary <- function(product_ids, end_date, start_date, curlHandle,
                  httpheader = c('X-Client-Key' = API_KEY),
                  httpauth = 1L, verbose = verbose, ssl.verifypeer = FALSE)
     curlHandle <- getCurlHandle(.opts = opts)
-  } else if (class(curlHandle) != "CURLHandle") {
+  } else if (!inherits(curlHandle, "CURLHandle")) {
     stop("curlHandle must be of class 'CURLHandle'.")
   } else {
-    curlHandle = curlHandle
+    curlHandle <- curlHandle
   }
   parList <- c(format = 'json', products = product_ids)
   jsonText <- getForm(uri, curl = curlHandle, .params = parList)
@@ -309,10 +309,10 @@ getFeaturedCounts <- function(product_ids, end_date, count = 5, show_empty = FAL
                  httpheader = c('X-Client-Key' = API_KEY),
                  httpauth = 1L, verbose = verbose, ssl.verifypeer = FALSE)
     curlHandle <- getCurlHandle(.opts = opts)
-  } else if (class(curlHandle) != "CURLHandle") {
+  } else if (!inherits(curlHandle, "CURLHandle")) {
     stop("curlHandle must be of class 'CURLHandle'.")
   } else {
-    curlHandle = curlHandle
+    curlHandle <- curlHandle
   }
   parList <- c(format = 'json', products = product_ids, end = end_date,
                count = count, show_empty = show_empty, granularity = granularity)
@@ -393,10 +393,10 @@ getFeaturedHistory <- function(product_id, feature_id, curlHandle, verbose = FAL
                  httpheader = c('X-Client-Key' = API_KEY),
                  httpauth = 1L, verbose = verbose, ssl.verifypeer = FALSE)
     curlHandle <- getCurlHandle(.opts = opts)
-  } else if (class(curlHandle) != "CURLHandle") {
+  } else if (!inherits(curlHandle, "CURLHandle")) {
     stop("curlHandle must be of class 'CURLHandle'.")
   } else {
-    curlHandle = curlHandle
+    curlHandle <- curlHandle
   }  
   parList <- c(format = 'json')
   jsonText <- getForm(uri, curl = curlHandle, .params = parList)
@@ -415,15 +415,13 @@ getFeaturedHistory <- function(product_id, feature_id, curlHandle, verbose = FAL
 
 #' Map JSON string to an R dataframe.
 #'
-#' \code{parseFeaturedHistory} parses the JSON returned
-#' by a featured history request made to the appFigures
-#' web API.
+#' \code{parseFeaturedHistory} parses the JSON returned by a featured history
+#' request made to the appFigures web API.
 #'
 
 parseFeaturedHistory <- function(jsonText) {
   datr <- fromJSON(jsonText)
-  datr$time <- as.POSIXct(datr$time,
-                        format = "%Y-%m-%dT%H:%M:%S")
+  datr$time <- as.POSIXct(datr$time, format = "%Y-%m-%dT%H:%M:%S")
   names(datr) <- c("time_stamp", "rank")
   datr[order(datr$time_stamp), ]
 }

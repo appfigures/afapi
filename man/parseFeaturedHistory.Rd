@@ -7,8 +7,7 @@
 parseFeaturedHistory(jsonText)
 }
 \description{
-\code{parseFeaturedHistory} parses the JSON returned
-by a featured history request made to the appFigures
-web API.
+\code{parseFeaturedHistory} parses the JSON returned by a featured history
+request made to the appFigures web API.
 }
 

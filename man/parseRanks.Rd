@@ -7,7 +7,7 @@
 parseRanks(jsonText)
 }
 \description{
-\code{parseRanks} parses the JSON returned by an app rank
-request made to the appFigures web API.
+\code{parseRanks} parses the JSON returned by an app rank request made to the
+ appFigures web API.
 }
 
