@@ -7,7 +7,7 @@ Description: Allows users to request account data from the appFigures
     official API documentation.
 URL: http://docs.appfigures.com/
 Version: 0.1.1
-Date: 2015-04-30
+Date: 2016-05-13
 Authors@R: person("Lucas", "Dowiak", email = "lucas@appfigures.com",
     role = c("aut", "cre"))
 License: GPL-2
