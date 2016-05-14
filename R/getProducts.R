@@ -29,6 +29,8 @@
 #' @seealso Official documentation:
 #' \url{http://docs.appfigures.com/products}.
 #' 
+#' @
+#' 
 
 getProducts <- function(product_id, store = c("all", "apple", "google_play",
                         "amazon", "windows"), curlHandle, verbose = FALSE,

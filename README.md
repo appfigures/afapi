@@ -4,14 +4,14 @@ afapi is an R interface for the appFigures API. It uses RCurl for html requests 
 
 ## Installation
 
-Install the development version from github:
+Install the development version from github. The package `devtools` is convenient if you're okay with the additional dependecies:
 
 ```R
 install.packages("devtools")
-devtools::install_github("appfigures/appfigures-r")
+devtools::install_github("appfigures/afapi")
 ```
 
-The package dependencies should install automatically as we, but if they don't, download directly:
+The package dependencies should install automatically as well, but if they don't, download directly:
 ```R
 install.packages("RCurl")
 install.packages("jsonlite")
@@ -43,7 +43,7 @@ usage = getUsage()
 usage["api_requests", c("today", "remaining")]
 
 # Get a list of all your products (needs private scope)
-getProducts("mine")
+getProducts() # identical to getProducts("mine")
 
 # You can request product metadata through the appFigures assigned product id:
 getProducts(41308333846)
