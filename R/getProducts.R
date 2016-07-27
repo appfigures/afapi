@@ -52,6 +52,7 @@ getProducts <- function(product_id, store = c("all", "apple", "google_play",
       message("Assuming `product_id` is store specific id.")
       uri <- sprintf(paste(BASE_URI, "products", store, "%s", sep = "/"),
                      product_id)
+      parList <- c(store = store)
     } else stop("appFigures or Store `id` must be specified for this function.")
   }
   if (missing(curlHandle)) {
