@@ -133,8 +133,7 @@ parseRanks <- function(jsonText) {
   datr <- fromJSON(jsonText)
   rr <- length(datr$dates)
   dd <- nrow(datr$data)
-  delts <- unlist(lapply(datr$data$positions,
-                         function(ll) c(NA, diff(ll))))
+  delts <- unlist(lapply(datr$data$positions, function(ll) c(NA, diff(ll))))
   if (rr == 0 || is.null(dd))
     return(data.frame())
   data.frame(
@@ -214,13 +213,13 @@ getRankSnapshot <- function(timestamp, category = 25204,
   stopifnot(length(country) == 1,
             length(category) == 1)
   subcategory <- match.arg(subcategory)
-  if (length(timestamp) > 1 && async == FALSE)
-    stop("If requesting more than one snapshot, async must be set to TRUE.")
   if (missing(timestamp))
     timestamp <- "current"
+  if (length(timestamp) > 1 && async == FALSE)
+    stop("If requesting more than one snapshot, async must be set to TRUE.")
   if ("current" %in% timestamp) {
     if (length(timestamp) > 1) {
-      stop("'current' can not be int the timestamps supplied to an asynchronous
+      stop("'current' can not be included in the timestamps supplied to an asynchronous
            request.")
     }
   } else {
@@ -272,6 +271,8 @@ getRankSnapshot <- function(timestamp, category = 25204,
 
 parseSnapshot <- function(jsonText) {
   datr <- fromJSON(jsonText)
+  if (!is.null(datr$status) && datr$status == 404)
+    return(data.frame())
   st <- datr$page_start + 1
   ed <- datr$page_count + datr$page_start
   data.frame(
