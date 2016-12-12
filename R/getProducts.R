@@ -39,13 +39,13 @@ getProducts <- function(product_id, store = c("all", "apple", "google_play",
   if (missing(product_id))
     product_id <- "mine"
   store <- match.arg(store)
-  if (product_id[1] == "mine") {
+  if (as.character(product_id[1]) == "mine") {
     uri <- paste(BASE_URI, "products", "mine", sep = "/")
     parList <- if (store != "all") c(store = store)
   } else {
     if (store == "all" && !missing(product_id)) {
       message("Store is set to `all`. Assuming `product_id` is the
-              appFigures-assinged id.")
+              appFigures-assigned id.")
       uri <- sprintf(paste(BASE_URI, "products", "%s", sep = "/"), product_id)
       parList <- NULL
     } else if(store != "all" && !missing(product_id)) {
