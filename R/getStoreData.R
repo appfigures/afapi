@@ -33,8 +33,8 @@
 #' \url{http://docs.appfigures.com/api/reference/v2/data}.
 #' 
 
-getStoreData <- function(tables = c("categories", "countries",
-                         "currencies", "languages", "stores"),
+getStoreData <- function(tables = c("categories", "countries", "currencies",
+                         "languages", "stores", "sdks"),
                          curlHandle, verbose = FALSE, orgJSON = FALSE) {
   
   tables <- match.arg(tables)
@@ -100,6 +100,8 @@ getStoreData <- function(tables = c("categories", "countries",
     return(output)
   } else if (tables == "stores") { 
     return(parseFullStoreData(jsonText))
+  } else if (tables == "sdks") {
+    return(parseSDKData(jsonText))
   } else {
     return("Something is broken.")
   }
@@ -152,5 +154,53 @@ parseFullStoreData <- function(jsonText) {
   list(apple = stores[["apple"]], google_play = stores[["google_play"]],
        amazon_appstore = stores[["amazon_appstore"]], windows10 = stores[["windows10"]],
        windows_phone = stores[["windows_phone"]], adnetworks = adnetworks)
-}  
+}
 
+
+
+
+#' Map JSON string to an R data frame.
+#'
+#' \code{parseSDKData} parses the JSON returned by a
+#' request made to the appFigures web API.
+#'
+
+parseSDKData <- function(jsonText) {
+
+  datr <- fromJSON(jsonText)
+  
+  ext_link <- function(x, y) {
+    if (nrow(x) == 0)
+      return(data.frame())
+    
+    x$name <- y
+    return(x)
+  }
+  external_links <- mapply(ext_link, datr$external_links, datr$name)
+  external_links <- do.call(rbind, external_links)
+  external_links <- external_links[, c("name", "type", "value")]
+  
+  datr$external_links <- NULL
+  datr$description <- NULL
+  datr$notes <- NULL
+  datr$developer <- NULL
+  
+  datr$tags <- vapply(datr$tags, function(x) paste(x, collapse=", "),
+                      FUN.VALUE=character(1))
+  
+  datr$release_date <- strptime(datr$release_date, format="%Y-%m-%dT%H:%M:%S",
+                                tz="GMT")
+  
+  datr$started_tracking <- strptime(datr$started_tracking,
+                                    format="%Y-%m-%dT%H:%M:%S",
+                                    tz="GMT")
+
+  datr$platforms <- vapply(datr$platforms, function(x) paste(x, collapse=", "),
+                           FUN.VALUE=character(1))
+  
+  datr$tracked_platforms <- vapply(datr$tracked_platforms,
+                                   function(x) paste(x, collapse=", "),
+                                   FUN.VALUE=character(1))
+
+  return(list(SDK_info=datr, External_links=external_links))  
+}  

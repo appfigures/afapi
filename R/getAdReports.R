@@ -14,7 +14,7 @@
 #' ranks to be reported. Defaults to the last 31 days. See Details.
 #' 
 #' @param group_by Character. Choose one or more of:
-#' \code{"dates", "products", "store", "countries", or "regions"}
+#' \code{"date", "product", "store", "country", or "netowrk"}
 #' 
 #' @param country Character. One or more country iso2 abbreviations.
 #' Defaults to all countries.
@@ -24,8 +24,8 @@
 #' @param format Character. Choose between \code{"flat", "csv",
 #' or "json"}. Defaults to \code{"flat"}. See Details
 #' 
-#' @param granularity Character. Should ranks be reported on a
-#' \code{"daily", "weekly", "monthly", or "yearly"} basis.
+#' @param granularity Character. How should values be aggregated in time.
+#' Options include \code{"daily", "weekly", "monthly", or "yearly"}.
 #' See Details.
 #' 
 #' @param curlHandle Provide an instance of the CURLHandle-class
@@ -33,13 +33,10 @@
 #' specific to the function call.
 #' 
 #' @param verbose Logical. Should details of the web request
-#' print to the console? Defaults to \code{FALSE}. Irrelevant if 
-#' \code{format = 'csv'}.
+#' print to the console? Defaults to \code{FALSE}.
 #' 
 #' @param orgJSON Logical. Should the JSON string be returned
-#' without being converted to R objects? Defaults to \code{FALSE}. If 
-#' \code{format = 'csv'}, the data is returned as a character string in
-#' csv format.
+#' without being converted to R objects? Defaults to \code{FALSE}.
 #' 
 #' @details For \code{start_date} and \code{end_date}, if the
 #' supplied argument can be interepreted as a date or POSIX
@@ -117,24 +114,28 @@ getAdReport <- function(product_ids, end_date, start_date,
   }
   jsonText <- getForm(uri, .opts = opts, .params = parList)
   if (orgJSON || format == "json") {
+    if (!validate(jsonText)) {
+      stop("appFigures API yielded invalid JSON!")
+    }
     return(jsonText) 
   }
   if (format == "csv") {
     conn <- textConnection(jsonText)
-    out <- read.csv(file = conn, header = T, stringsAsFactors = F)
+    output <- read.csv(file = conn, header = T, stringsAsFactors = F)
     close(conn)
-    return(out)
   }
-  if (!validate(jsonText)) {
-    stop("appFigures API yielded invalid JSON!")
+  if (format == "flat") {
+    output <- fromJSON(jsonText)
   }
-  output <- fromJSON(jsonText)
-  output$revenue <- as.numeric(output$revenue)
-  output$returns_amount <- as.numeric(output$returns_amount)
-  output$educational_revenue <- as.numeric(output$educational_revenue)
+  cont_vars <- c("gross_revenue", "revenue", "gross_returns_amount",
+                 "returns_amount", "gross_educational_revenue",
+                 "educational_revenue")
+  for (cv in intersect(cont_vars, names(output))) {
+    output[, cv] <- as.numeric(output[, cv])
+  }
   if (all(c("start_date", "end_date") %in% names(output))) {
     output$start_date <- as.Date(output$start_date)
     output$end_date <- as.Date(output$end_date)
   }
-  output
+  return(output)
 }

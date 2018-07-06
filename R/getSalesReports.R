@@ -23,8 +23,8 @@
 #' "financial"}. Defaults to \code{"none"}. This only applies
 #' to Apple products.
 #' 
-#' @param granularity Character. Should ranks be reported on a
-#' \code{"daily", "weekly", "monthly", or "yearly"} basis.
+#' @param granularity Character. How should values be aggregated in time.
+#' Options include \code{"daily", "weekly", "monthly", or "yearly"}.
 #' See Details.
 #' 
 #' @param format Character. Choose between \code{"flat", "csv",
@@ -114,6 +114,9 @@ getSalesReport <- function(product_ids, end_date, start_date,
     curlHandle <- curlHandle
   }
   jsonText <- getForm(uri, .opts = opts, .params = parList)
+  if (!validate(jsonText)) {
+    stop("appFigures API yielded invalid JSON!")
+  }
   if (orgJSON | format == "json") {
     return(jsonText)
   }
@@ -123,9 +126,6 @@ getSalesReport <- function(product_ids, end_date, start_date,
                     stringsAsFactors = F)
     close(conn)
     return(out)
-  }
-  if (!validate(jsonText)) {
-    stop("appFigures API yielded invalid JSON!")
   }
   output <- fromJSON(jsonText)
   output$revenue <- as.numeric(output$revenue)

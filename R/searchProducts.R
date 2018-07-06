@@ -20,10 +20,10 @@
 #' specific to the function call.
 #' 
 #' @param verbose Logical. Should details of the web request
-#' print to the console? Defaults to FALSE.
+#' print to the console? Defaults to \code{FALSE}.
 #' 
 #' @param orgJSON Logical. Should the JSON string be returned
-#' without being converted to R objects? Defaults to FALSE.
+#' without being converted to R objects? Defaults to \code{FALSE}.
 #' 
 #' @details For the \code{term} argument, prefix the string
 #' with \code{@@name=} or \code{@@developer=} if you want to search those fields
