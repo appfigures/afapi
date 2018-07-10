@@ -1,2 +1,8 @@
+0.1.2
+ - add subscription report route
+ - add adspend report route
+ - add revenue report route
+ - add data/sdk route
+
 0.1.1
  - Initial public release

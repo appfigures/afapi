@@ -6,8 +6,8 @@ Description: Allows users to request account data from the appFigures
     function options adhere closely to the routes specified in the
     official API documentation.
 URL: http://docs.appfigures.com/
-Version: 0.1.1
-Date: 2016-05-13
+Version: 0.1.2
+Date: 2018-07-10
 Authors@R: person("Lucas", "Dowiak", email = "lucas@appfigures.com",
     role = c("aut", "cre"))
 License: GPL-2

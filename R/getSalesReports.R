@@ -114,26 +114,29 @@ getSalesReport <- function(product_ids, end_date, start_date,
     curlHandle <- curlHandle
   }
   jsonText <- getForm(uri, .opts = opts, .params = parList)
-  if (!validate(jsonText)) {
-    stop("appFigures API yielded invalid JSON!")
-  }
-  if (orgJSON | format == "json") {
-    return(jsonText)
+  if (orgJSON || format == "json") {
+    if (!validate(jsonText)) {
+      stop("appFigures API yielded invalid JSON!")
+    }
+    return(jsonText) 
   }
   if (format == "csv") {
     conn <- textConnection(jsonText)
-    out <- read.csv(file = conn, header = T,
-                    stringsAsFactors = F)
+    output <- read.csv(file = conn, header = T, stringsAsFactors = F)
     close(conn)
-    return(out)
   }
-  output <- fromJSON(jsonText)
-  output$revenue <- as.numeric(output$revenue)
-  output$returns_amount <- as.numeric(output$returns_amount)
-  output$educational_revenue <- as.numeric(output$educational_revenue)
+  if (format == "flat") {
+    output <- fromJSON(jsonText)
+  }
+  cont_vars <- c("gross_revenue", "revenue", "gross_returns_amount",
+                 "returns_amount", "gross_educational_revenue",
+                 "educational_revenue")
+  for (cv in intersect(cont_vars, names(output))) {
+    output[, cv] <- as.numeric(output[, cv])
+  }
   if (all(c("start_date", "end_date") %in% names(output))) {
     output$start_date <- as.Date(output$start_date)
     output$end_date <- as.Date(output$end_date)
   }
-  output
+  return(output)
 }
