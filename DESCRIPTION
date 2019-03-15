@@ -6,10 +6,13 @@ Description: Allows users to request account data from the appFigures
     function options adhere closely to the routes specified in the
     official API documentation.
 URL: http://docs.appfigures.com/
-Version: 0.1.2
-Date: 2018-07-10
-Authors@R: person("Lucas", "Dowiak", email = "lucas@appfigures.com",
-    role = c("aut", "cre"))
+Version: 0.1.3
+Date: 2019-03-15
+Authors@R: c(
+  person("Josh", "Vernazza", email = "josh@appfigures.com", role = c("cre")),
+  person("Lucas", "Dowiak", email = "lucas@appfigures.com", role = c("aut"))
+  )
 License: GPL-2
 Depends: jsonlite (>= 0.9.16),
     RCurl (>= 1.95-4.5)
+RoxygenNote: 6.1.1
