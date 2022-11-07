@@ -85,7 +85,7 @@ parseEstimates <- function(jsonText) {
   data.frame(
     date = as.POSIXct(datr$start_date, format = "%Y-%m-%dT%H:%M:%S"),
     product_id = datr$product_id,
-    sales = datr$sales,
+    sales = datr$downloads,
     revenue = as.numeric(datr$revenue),
     stringsAsFactors = F
   )
